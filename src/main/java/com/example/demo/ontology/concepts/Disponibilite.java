@@ -11,8 +11,7 @@ import lombok.Setter;
 import java.util.Date;
 
 
-@Getter
-@Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class Disponibilite implements Concept {
@@ -31,4 +30,38 @@ public class Disponibilite implements Concept {
                 ", duree=" + duree +
                 '}';
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Date getDateHeure() {
+        return dateHeure;
+    }
+
+    public int getDuree() {
+        return duree;
+    }
+
+    public int getIdMedecin() {
+        return idMedecin;
+    }
+
+    public void setDateHeure(Date dateHeure) {
+        this.dateHeure = dateHeure;
+    }
+
+    public void setIdMedecin(int idMedecin) {
+        this.idMedecin = idMedecin;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+
 }

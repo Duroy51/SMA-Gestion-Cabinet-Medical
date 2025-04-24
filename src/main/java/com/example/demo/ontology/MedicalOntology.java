@@ -22,7 +22,15 @@ public class MedicalOntology extends Ontology {
 
     // Méthode d'accès au singleton
     // Singleton instance
-    @Getter
+
+    public static Ontology getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(Ontology instance) {
+        MedicalOntology.instance = instance;
+    }
+
     private static Ontology instance = new MedicalOntology();
 
     // Noms des concepts de l'ontologie

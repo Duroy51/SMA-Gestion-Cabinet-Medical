@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class Patient implements Concept {
@@ -26,4 +25,37 @@ public class Patient implements Concept {
                 ", informationsPersonnelles='" + informationsPersonnelles + '\'' +
                 '}';
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getInformationsPersonnelles() {
+        return informationsPersonnelles;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setInformationsPersonnelles(String informationsPersonnelles) {
+        this.informationsPersonnelles = informationsPersonnelles;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
 }
