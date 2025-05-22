@@ -15,83 +15,102 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Service responsible for managing JADE agents within different containers.
+ * This includes starting, stopping, suspending, and resuming agents,
+ * as well as listing currently running agents.
+ * It relies on a map of pre-configured JADE agent containers.
+ */
 @Service
 public class AgentService {
 
-   /* @Autowired
-    @Qualifier("mainContainer")
-    private AgentContainer mainContainer;*/
+    private Map<String, AgentContainer> agentContainers; // Map of available agent containers, keyed by name
+    private final Map<String, AgentController> runningAgents = new HashMap<>(); // Map to keep track of running agents and their controllers
 
-
-    private Map<String, AgentContainer> agentContainers;
-
-    private final Map<String, AgentController> runningAgents = new HashMap<>();
-
-
+    /**
+     * Constructs the AgentService with a map of available agent containers.
+     * This map is typically injected by Spring, containing containers defined in {@link com.example.demo.config.JadeConfig}.
+     *
+     * @param agentContainers A map where keys are container names and values are {@link AgentContainer} instances.
+     */
     public AgentService(Map<String, AgentContainer> agentContainers) {
         this.agentContainers = agentContainers;
     }
 
-
     /**
-     * Crée et démarre un agent dans le conteneur principal
-     */
-    /*public void startAgent(String agentName, String agentClass, Object[] args) throws StaleProxyException {
-        AgentController controller = mainContainer.createNewAgent(agentName, agentClass, args);
-        controller.start();
-        runningAgents.put(agentName, controller);
-    }*/
-
-    /**
-     * Crée et démarre un agent dans un conteneur spécifique
+     * Creates and starts a new agent within a specified JADE container.
+     *
+     * @param containerName The name of the container where the agent should be started.
+     *                      This name must exist as a key in the `agentContainers` map.
+     * @param agentName     The local name to be assigned to the new agent.
+     * @param agentClass    The fully qualified class name of the agent to be created.
+     * @param args          An array of objects to be passed as arguments to the agent's `setup()` method.
+     * @throws StaleProxyException      If there is an issue with the agent controller proxy (e.g., agent already killed).
+     * @throws IllegalArgumentException If the specified `containerName` is not found.
      */
     public void startAgentInContainer(String containerName, String agentName, String agentClass, Object[] args)
             throws StaleProxyException {
-        AgentContainer container = agentContainers.get(containerName);
+        AgentContainer container = agentContainers.get(containerName); // Retrieve the specified container
         if (container == null) {
-            throw new IllegalArgumentException("Container not found: " + containerName);
+            throw new IllegalArgumentException("Container not found: " + containerName); // Throw exception if container doesn't exist
         }
 
+        // Create the new agent within the container
         AgentController controller = container.createNewAgent(agentName, agentClass, args);
-        controller.start();
-        runningAgents.put(agentName, controller);
+        controller.start(); // Start the newly created agent
+        runningAgents.put(agentName, controller); // Store the agent's controller for future management
     }
 
     /**
-     * Arrête un agent
+     * Stops a running agent.
+     * If the agent is found, it is killed and removed from the list of running agents.
+     *
+     * @param agentName The local name of the agent to be stopped.
+     * @throws StaleProxyException If there is an issue with the agent controller proxy.
      */
     public void stopAgent(String agentName) throws StaleProxyException {
-        AgentController controller = runningAgents.get(agentName);
+        AgentController controller = runningAgents.get(agentName); // Get the controller for the named agent
         if (controller != null) {
-            controller.kill();
-            runningAgents.remove(agentName);
+            controller.kill(); // Terminate the agent
+            runningAgents.remove(agentName); // Remove from the tracking map
         }
     }
 
     /**
-     * Suspendre un agent
+     * Suspends a running agent.
+     * If the agent is found and is not already suspended, its execution is paused.
+     *
+     * @param agentName The local name of the agent to be suspended.
+     * @throws StaleProxyException If there is an issue with the agent controller proxy.
      */
     public void suspendAgent(String agentName) throws StaleProxyException {
-        AgentController controller = runningAgents.get(agentName);
+        AgentController controller = runningAgents.get(agentName); // Get the controller
         if (controller != null) {
-            controller.suspend();
+            controller.suspend(); // Suspend the agent
         }
     }
 
     /**
-     * Réactiver un agent suspendu
+     * Resumes a previously suspended agent.
+     * If the agent is found and is suspended, its execution is resumed.
+     *
+     * @param agentName The local name of the agent to be resumed.
+     * @throws StaleProxyException If there is an issue with the agent controller proxy.
      */
     public void resumeAgent(String agentName) throws StaleProxyException {
-        AgentController controller = runningAgents.get(agentName);
+        AgentController controller = runningAgents.get(agentName); // Get the controller
         if (controller != null) {
-            controller.activate();
+            controller.activate(); // Resume the agent
         }
     }
 
     /**
-     * Obtenir la liste des noms d'agents en cours d'exécution
+     * Retrieves an array of names of all currently running agents managed by this service.
+     *
+     * @return A string array containing the local names of all running agents.
+     *         Returns an empty array if no agents are currently running.
      */
     public String[] getRunningAgents() {
-        return runningAgents.keySet().toArray(new String[0]);
+        return runningAgents.keySet().toArray(new String[0]); // Return the set of agent names as an array
     }
 }

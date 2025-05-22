@@ -35,12 +35,6 @@ public class JadeConfig {
         return Runtime.instance();
     }
 
-    /*@Bean(name = "mainContainer")
-    public AgentContainer mainContainer() throws ControllerException {
-        Profile mainProfile = createMainProfile();
-        return jadeRuntime().createMainContainer(mainProfile);
-    }*/
-
     private Profile createMainProfile(){
         ProfileImpl profile = new ProfileImpl();
         profile.setParameter(Profile.MAIN_HOST, mainHost);

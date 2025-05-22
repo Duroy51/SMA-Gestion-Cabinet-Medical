@@ -12,19 +12,25 @@
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
-	<url/>
+	<description>JADE Spring Boot Medical Demo</description>
+	<url>https://example.com/jade-medical-demo</url>
 	<licenses>
-		<license/>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<name>Demo Developer</name>
+			<email>developer@example.com</email>
+		</developer>
 	</developers>
 	<scm>
-		<connection/>
-		<developerConnection/>
+		<connection>scm:git:git://example.com/jade-medical-demo.git</connection>
+		<developerConnection>scm:git:ssh://example.com/jade-medical-demo.git</developerConnection>
 		<tag/>
-		<url/>
+		<url>http://example.com/jade-medical-demo</url>
 	</scm>
 	<properties>
 		<java.version>17</java.version>
@@ -47,7 +53,7 @@
 		<dependency>
 			<groupId>com.gitlab.jade-project</groupId>
 			<artifactId>jade</artifactId>
-			<version>master</version>
+			<version>4.6.0</version>
 		</dependency>
 
 		<dependency>
